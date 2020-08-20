@@ -1,0 +1,31 @@
+{
+  "name": "wowmemo-api",
+  "version": "1.0.0",
+  "description": "Backend for WoWMemo app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "export NODE_ENV=\"dev\" && nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beatadetkova/WoWMemo-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beatadetkova/WoWMemo-api/issues"
+  },
+  "homepage": "https://github.com/beatadetkova/WoWMemo-api#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "knex": "^0.21.5",
+    "pg": "^8.3.2"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.4"
+  }
+}

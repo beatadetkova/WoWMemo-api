@@ -1,12 +1,16 @@
+const saltRounds = 10;
+const bcrypt = require('bcrypt');
+
 const handleSignin = (db, bcrypt) => (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res. status(400).json('incorrect form submission');
   }
-  db.select('email', 'hash').from('login')
+  db.select('email', 'hash').from('users')
     .where('email', '=', email)
-    .then(data => {
-      const isValid = bcrypt.compareSync(password, data[0].hash);
+    .then(async data => {
+      console.log(data);
+      const isValid = await bcrypt.compare(password, data[0].hash);
       if (isValid) {
         return db.select('*').from('users')
         .where('email', '=', email)

@@ -26,22 +26,20 @@ if (process.env.NODE_ENV === 'dev') {
   });
 }
 
-// const register = require('./controllers/register');
-// const signin = require('./controllers/signin');
-// const profile = require('./controllers/profile');
+const register = require('./controllers/register');
+const signin = require('./controllers/signin');
+const profile = require('./controllers/profile');
 
 const app = express();
 
 app.use(express.json());
 app.use(cors())
 
-// app.get('/', (req, res) => { res.send('it is working!') })
-// app.post('/signin', signin.handleSignin(db, bcrypt))
-// app.post('/register', register.handleRegister(db, bcrypt))
-// app.get('/profile/:id', profile.handleProfileGet(db))
-// app.put('/image', image.handleImage(db))
-// app.post('/imageurl', (req, res) => {image.handleApiCall(req, res)})
+app.get('/', (req, res) => { res.send('it is working!') })
+app.post('/signin', signin.handleSignin(db, bcrypt))
+app.post('/register', register.handleRegister(db, bcrypt))
+app.get('/profile/:id', profile.handleProfileGet(db))
 
-app.listen(process.env.PORT || 3000, ()=> {
-  console.log(`app is running on port ${process.env.PORT || 3000}`)
+app.listen(process.env.PORT || 4000, ()=> {
+  console.log(`app is running on port ${process.env.PORT || 4000}`)
 })

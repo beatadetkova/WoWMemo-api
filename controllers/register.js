@@ -18,5 +18,5 @@ const handleRegister = (db, bcrypt) => async (req, res) => {
 }
 
 module.exports = {
-  handleRegister: handleRegister
+  handleRegister
 };

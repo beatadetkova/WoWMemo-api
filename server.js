@@ -35,7 +35,28 @@ const app = express();
 app.use(express.json());
 app.use(cors())
 
-app.get('/', (req, res) => { res.send('it is working!') })
+// START testing JWT
+app.get('/', (req, res) => {
+  const payload = {
+    name: 'Bea',
+    age: 29,
+    nerd: true
+  }
+  const jwt = require('./helpers/jwt-utilities.js').sign(payload)
+  res.send(jwt)
+})
+app.post('/verify', (req, res) => {
+  const { jwt } = req.body
+  try {
+    const verify = require('./helpers/jwt-utilities.js').verify(jwt)
+    res.json(JSON.stringify(verify))
+  } catch (err) {
+    console.log(err)
+    res.status(401).send('Unauthorized!')
+  }  
+})
+// END testing JWT
+
 app.post('/signin', signin.handleSignin(db, bcrypt))
 app.post('/register', register.handleRegister(db, bcrypt))
 app.get('/profile/:id', profile.handleProfileGet(db))

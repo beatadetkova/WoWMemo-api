@@ -1,5 +1,6 @@
 const saltRounds = 10;
 const bcrypt = require('bcrypt');
+const { sign } = require('../helpers/jwt-utilities.js')
 
 const handleSignin = (db, bcrypt) => (req, res) => {
   const { email, password } = req.body;
@@ -12,17 +13,14 @@ const handleSignin = (db, bcrypt) => (req, res) => {
       console.log(data);
       const isValid = await bcrypt.compare(password, data[0].hash);
       if (isValid) {
-        return db.select('*').from('users')
-        .where('email', '=', email)
-        .then(user => {
-          res.json(user[0])
-        })
-        .catch(err => res.status(400).json('unable to get user'))
+        const payload = { email }
+        const jwt = sign(payload)
+        res.json(JSON.stringify({ jwt }))
       } else {
-          res.status(400).json('wrong credentials')
+        res.status(401).json('unauthorized access')
       }
     })
-    .catch(err => res.status(400).json('wrong credentials'))
+    .catch(err => res.status(404).json('user not found'))
 }
 
 module.exports = {

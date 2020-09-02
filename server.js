@@ -53,8 +53,16 @@ app.post('/verify', (req, res) => {
   } catch (err) {
     console.log(err)
     res.status(401).send('Unauthorized!')
-  }  
+  }
 })
+
+app.post('/decode', (req, res) => {
+  const { jwt } = req.body
+  const decoded = require('./helpers/jwt-utilities.js').decode(jwt)
+  console.log(decoded.payload)
+  res.json(JSON.stringify(decoded))
+})   
+
 // END testing JWT
 
 app.post('/signin', signin.handleSignin(db, bcrypt))

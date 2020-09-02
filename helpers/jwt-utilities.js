@@ -24,5 +24,8 @@ module.exports = {
         ...opts
     };
     return jwt.verify(token, publicKEY, verifyOptions);
+  },
+  decode: (token) => {
+    return jwt.decode(token, {complete: true});
   }
 }

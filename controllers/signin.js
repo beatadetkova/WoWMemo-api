@@ -1,11 +1,9 @@
-const saltRounds = 10;
-const bcrypt = require('bcrypt');
 const { sign } = require('../helpers/jwt-utilities.js')
 
 const handleSignin = (db, bcrypt) => (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res. status(400).json('incorrect form submission');
+    return res.status(400).json('incorrect form submission');
   }
   db.select('email', 'hash').from('users')
     .where('email', '=', email)

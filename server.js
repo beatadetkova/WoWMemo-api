@@ -36,15 +36,15 @@ app.use(express.json());
 app.use(cors())
 
 // START testing JWT
-app.get('/', (req, res) => {
-  const payload = {
-    name: 'Bea',
-    age: 29,
-    nerd: true
-  }
-  const jwt = require('./helpers/jwt-utilities.js').sign(payload)
-  res.send(jwt)
-})
+// app.get('/', (req, res) => {
+//   const payload = {
+//     name: 'Bea',
+//     age: 29,
+//     nerd: true
+//   }
+//   const jwt = require('./helpers/jwt-utilities.js').sign(payload)
+//   res.send(jwt)
+// })
 app.post('/verify', (req, res) => {
   const { jwt } = req.body
   try {
@@ -67,7 +67,6 @@ app.post('/decode', (req, res) => {
 
 app.post('/signin', signin.handleSignin(db, bcrypt))
 app.post('/register', register.handleRegister(db, bcrypt))
-app.get('/profile/:id', profile.handleProfileGet(db))
 
 app.listen(process.env.PORT || 4000, ()=> {
   console.log(`app is running on port ${process.env.PORT || 4000}`)

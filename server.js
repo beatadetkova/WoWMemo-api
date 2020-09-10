@@ -28,7 +28,6 @@ if (process.env.NODE_ENV === 'dev') {
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
-const profile = require('./controllers/profile');
 
 const app = express();
 
@@ -65,8 +64,8 @@ app.post('/decode', (req, res) => {
 
 // END testing JWT
 
-app.post('/signin', signin.handleSignin(db, bcrypt))
-app.post('/register', register.handleRegister(db, bcrypt))
+app.post('/auth/signin', signin.handleSignin(db, bcrypt))
+app.post('/auth/register', register.handleRegister(db, bcrypt))
 
 app.listen(process.env.PORT || 4000, ()=> {
   console.log(`app is running on port ${process.env.PORT || 4000}`)

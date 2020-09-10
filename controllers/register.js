@@ -12,7 +12,11 @@ const handleRegister = (db, bcrypt) => async (req, res) => {
     })
     .into('users')
     .returning('email')
-    .then(email => res.send(email))
+    .then(email => {
+      const payload = { email }
+      const jwt = sign(payload)
+      res.json(JSON.stringify({ jwt }))
+    })
     .catch(err => res.status(400).json('unable to register'))
   })
 }

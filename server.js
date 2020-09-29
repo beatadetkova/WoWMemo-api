@@ -2,17 +2,22 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const knex = require('knex');
-let db
+const dotenv = require('dotenv');
+const decode = require('./helpers/jwt-utilities.js');
+const verify = require('./helpers/jwt-utilities.js');
+
+let db;
+
 if (process.env.NODE_ENV === 'dev') {
-  require('dotenv').config();
+  dotenv.config();
   db = knex({
     client: 'pg',
     connection: {
-      host : process.env.DB_HOST,
-      user : process.env.DB_USERNAME,
-      password : process.env.DB_PWD,
-      database : process.env.DB_NAME
-    }
+      host: process.env.DB_HOST,
+      user: process.env.DB_USERNAME,
+      password: process.env.DB_PWD,
+      database: process.env.DB_NAME,
+    },
   });
 } else {
   db = knex({
@@ -20,9 +25,9 @@ if (process.env.NODE_ENV === 'dev') {
     connection: {
       connectionString: process.env.DATABASE_URL,
       ssl: {
-        rejectUnauthorized: false
-      }
-    }
+        rejectUnauthorized: false,
+      },
+    },
   });
 }
 
@@ -32,7 +37,7 @@ const signin = require('./controllers/signin');
 const app = express();
 
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 // START testing JWT
 // app.get('/', (req, res) => {
@@ -45,28 +50,28 @@ app.use(cors())
 //   res.send(jwt)
 // })
 app.post('/verify', (req, res) => {
-  const { jwt } = req.body
+  const { jwt } = req.body;
   try {
-    const verify = require('./helpers/jwt-utilities.js').verify(jwt)
-    res.json(JSON.stringify(verify))
+    const verified = verify.verify(jwt);
+    res.json(JSON.stringify(verified));
   } catch (err) {
-    console.log(err)
-    res.status(401).send('Unauthorized!')
+    console.log(err);
+    res.status(401).send('Unauthorized!');
   }
-})
+});
 
 app.post('/decode', (req, res) => {
-  const { jwt } = req.body
-  const decoded = require('./helpers/jwt-utilities.js').decode(jwt)
-  console.log(decoded.payload)
-  res.json(JSON.stringify(decoded))
-})   
+  const { jwt } = req.body;
+  const decoded = decode.decode(jwt);
+  console.log(decoded.payload);
+  res.json(JSON.stringify(decoded));
+});
 
 // END testing JWT
 
-app.post('/auth/signin', signin.handleSignin(db, bcrypt))
-app.post('/auth/register', register.handleRegister(db, bcrypt))
+app.post('/auth/signin', signin.handleSignin(db, bcrypt));
+app.post('/auth/register', register.handleRegister(db, bcrypt));
 
-app.listen(process.env.PORT || 4000, ()=> {
-  console.log(`app is running on port ${process.env.PORT || 4000}`)
-})
+app.listen(process.env.PORT || 4000, () => {
+  console.log(`app is running on port ${process.env.PORT || 4000}`);
+});
